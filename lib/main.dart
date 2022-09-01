@@ -7,7 +7,7 @@ import 'pages/login.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   doWhenWindowReady(() {
-    var initialSize = Size(1600, 900);
+    var initialSize = Size(900, 620);
     appWindow.size = initialSize;
     appWindow.minSize = initialSize;
   });

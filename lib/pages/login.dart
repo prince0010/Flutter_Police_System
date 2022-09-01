@@ -19,8 +19,8 @@ class _HomePageState extends State<HomePage> {
   TextEditingController password = TextEditingController();
 
   Future login(BuildContext cont) async {
-    var response = await http
-        .post(Uri.parse("http://127.0.0.1:8000/api/auth/login"), body: {
+    var response =
+        await http.post(Uri.parse("http://127.0.0.1:8000/api/auth/login"), body: {
       "username": username.text,
       "password": password.text,
     });
