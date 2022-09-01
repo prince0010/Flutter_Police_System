@@ -1,6 +1,8 @@
 # policesystem
 
-A new Flutter project.
+After cloning this branch, follow this step in order to run it to any kind of platforms:
+1. flutter clean
+2. flutter run 
 
 ## Getting Started
 
