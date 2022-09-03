@@ -19,6 +19,7 @@ class Pick_panel extends StatefulWidget {
 // );
 
 class Debouncer {
+  //delaying the display about the data info
   final int milliseconds;
   Debouncer({required this.milliseconds});
 
@@ -44,7 +45,7 @@ class _PickPanel extends State<Pick_panel> {
   @override
   void initState() {
     sort = false;
-    _users = User.getUsers();
+    // _users = User.getUsers(); =====!IMPORTANT!============ Kwaon ang data sa pick_panel_model
     selectedUsers = [];
     super.initState();
     testWindowSize();
