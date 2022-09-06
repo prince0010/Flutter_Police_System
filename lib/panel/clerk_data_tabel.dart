@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,11 +17,29 @@ class Pick_panel extends StatefulWidget {
 // @override
 // Widget build(BuildContext context => Scaffold
 // );
+
+class Debouncer {
+  final int milliseconds;
+  Debouncer({required this.milliseconds});
+
+  late VoidCallback action;
+  late Timer _timer;
+
+  run(VoidCallback action) {
+    if (null != _timer) {
+      _timer.cancel();
+    }
+
+    _timer = Timer(Duration(milliseconds: milliseconds), action);
+  }
+}
+
 class _PickPanel extends State<Pick_panel> {
   late List<User> _users;
   late List<User> selectedUsers;
-
+  late List<User> _filterusers;
   late bool sort;
+  final _debouncer = Debouncer(milliseconds: 500);
 
   @override
   void initState() {
@@ -35,6 +55,7 @@ class _PickPanel extends State<Pick_panel> {
     await DesktopWindow.setMinWindowSize(const Size(1280, 720));
   }
 
+//Sorting sa firstname
   onSortColumn(int columnIndex, bool ascending) {
     if (columnIndex == 0) {
       if (ascending) {
@@ -122,17 +143,17 @@ class _PickPanel extends State<Pick_panel> {
           const DataColumn(
             label: Text("Height"),
             numeric: false,
-            tooltip: "This is the Height",
+            tooltip: "Height",
           ),
           const DataColumn(
             label: Text("Sex"),
             numeric: false,
-            tooltip: "Your Gender",
+            tooltip: "Sex",
           ),
           const DataColumn(
             label: Text("Nationality"),
             numeric: false,
-            tooltip: "This is the Last Name",
+            tooltip: "Nationality",
           ),
           const DataColumn(
             label: Text("Address"),
@@ -246,12 +267,12 @@ class _PickPanel extends State<Pick_panel> {
         mainAxisSize: MainAxisSize.min,
         verticalDirection: VerticalDirection.down,
         children: <Widget>[
-          TextFormField(
-            initialValue: 'Input text',
+          TextField(
             maxLength: 50,
             decoration: const InputDecoration(
               icon: Icon(Icons.search),
               labelText: 'Search',
+              hintText: 'Input text',
               labelStyle: TextStyle(
                 color: Color.fromARGB(255, 0, 56, 238),
               ),
@@ -263,6 +284,9 @@ class _PickPanel extends State<Pick_panel> {
                 borderSide: BorderSide(color: Color.fromARGB(255, 0, 56, 238)),
               ),
             ),
+            onChanged: (value) {
+              //go to debouncer class
+            },
           ),
           Container(
             width: double.infinity,
@@ -271,20 +295,20 @@ class _PickPanel extends State<Pick_panel> {
           // ),),
           // Card(
           // child:
-          // Expanded(
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     mainAxisSize: MainAxisSize.min,
-          //     children: <Widget>[
-          //       Padding(
-          //         padding: EdgeInsets.all(140.0),
-          //         child: OutlinedButton(
-          //             onPressed: () {},
-          //             child: Text('SELECTED ${selectedUsers.length}')),
-          //       ),
-          //     ],
-          //   ),
-          // ),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(140.0),
+                  child: OutlinedButton(
+                      onPressed: () {},
+                      child: Text('SELECTED ${selectedUsers.length}')),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

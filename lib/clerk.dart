@@ -28,12 +28,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Police System',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: GoogleFonts.poppins().fontFamily,
         //   primarySwatch: Colors.blue,
       ),
-      debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      initialRoute: '/',
+      routes: {
+        '/': (_) => HomePage(),
+      },
     );
   }
 }
