@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:policesystem/adminPanels/user_panel.dart';
+import 'package:policesystem/adminPanels/home_panel.dart';
 
 // import 'component/admin_table_components.dart';
 

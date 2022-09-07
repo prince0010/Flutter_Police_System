@@ -52,6 +52,9 @@ dependencies:
   responsive_table: ^0.2.0+2
   desktop_window: ^0.4.0
   flutter_speed_dial: ^6.0.0
+  intl: ^0.17.0
+  data_grid: ^0.0.8
+  syncfusion_flutter_datagrid: ^20.2.48
 
 
 

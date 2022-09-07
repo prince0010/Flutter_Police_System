@@ -1,0 +1,85 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Flutter_Police_System",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "Flutter_Police_System (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "Flutter_Police_System (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "admin_fold",
+            "cwd": "admin_fold",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "admin_fold (profile mode)",
+            "cwd": "admin_fold",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "admin_fold (release mode)",
+            "cwd": "admin_fold",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "cashier",
+            "cwd": "cashier",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "cashier (profile mode)",
+            "cwd": "cashier",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "cashier (release mode)",
+            "cwd": "cashier",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "system",
+            "cwd": "system",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "system (profile mode)",
+            "cwd": "system",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "system (release mode)",
+            "cwd": "system",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
