@@ -1,5 +1,9 @@
 {
     "cSpell.words": [
         "Debouncer"
-    ]
+    ],
+    "discord.detailsDebugging": "Blabla",
+    "discord.detailsEditing": "Blabla",
+    "discord.lowerDetailsDebugging": "Blabla",
+    "discord.lowerDetailsEditing": "Blabla"
 }

@@ -55,6 +55,9 @@ dependencies:
   intl: ^0.17.0
   data_grid: ^0.0.8
   syncfusion_flutter_datagrid: ^20.2.48
+  data_table_2: ^2.3.7
+  provider: ^6.0.3
+  dio: ^4.0.6
 
 
 

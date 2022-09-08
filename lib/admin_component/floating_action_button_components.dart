@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:policesystem/admin_panels/user_form_panel.dart';
 
 class Speed_Dial extends StatefulWidget {
   @override
@@ -37,7 +38,10 @@ class _Speed_DialState extends State<Speed_Dial> {
         SpeedDialChild(
             child: Icon(Icons.add),
             label: 'Add User',
-            // onTap: () => showToast('Add User'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => UserFormPanel()));
+            },
             backgroundColor: Colors.orange),
         // onTap: () => {},
         SpeedDialChild(

@@ -6,7 +6,7 @@ import 'package:policesystem/model/clerk_data_table_model.dart';
 import 'package:desktop_window/desktop_window.dart';
 
 class Pick_panel extends StatefulWidget {
-  const Pick_panel({Key? key}) : super(key: key);
+  const Pick_panel({required Key? key}) : super(key: key);
 
   @override
   State<Pick_panel> createState() => _PickPanel();

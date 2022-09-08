@@ -11,8 +11,8 @@ import 'package:policesystem/adminPanels/pur_panel.dart';
 import 'package:policesystem/adminPanels/rank_panel.dart';
 import 'package:policesystem/adminPanels/home_panel.dart';
 import 'package:policesystem/adminPanels/zone_panel.dart';
-import 'package:policesystem/component/floating_action_button_components.dart';
-import 'package:policesystem/component/list_view_component.dart';
+import 'package:policesystem/admin_component/list_view_component.dart';
+import 'package:policesystem/admin_component/floating_action_button_components.dart';
 import 'package:responsive_table/responsive_table.dart';
 
 class DataPage extends StatefulWidget {

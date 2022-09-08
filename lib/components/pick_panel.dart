@@ -18,28 +18,29 @@ class Pick_panel extends StatefulWidget {
 // Widget build(BuildContext context => Scaffold
 // );
 
-class Debouncer {
-  final int milliseconds;
-  Debouncer({required this.milliseconds});
+// class Debouncer {
+//   final int milliseconds;
+//   Debouncer({required this.milliseconds});
 
-  late VoidCallback action;
-  late Timer _timer;
+//   late VoidCallback action;
+//   late Timer _timer;
 
-  run(VoidCallback action) {
-    if (null != _timer) {
-      _timer.cancel();
-    }
+//   run(VoidCallback action) {
+//     if (null != _timer) {
+//       _timer.cancel();
+//     }
 
-    _timer = Timer(Duration(milliseconds: milliseconds), action);
-  }
-}
+//     _timer = Timer(Duration(milliseconds: milliseconds), action);
+//   }
+// }
 
 class _PickPanel extends State<Pick_panel> {
   late List<User> _users;
   late List<User> selectedUsers;
   late List<User> _filterusers;
   late bool sort;
-  final _debouncer = Debouncer(milliseconds: 500);
+  bool _isAscending = true;
+  // final _debouncer = Debouncer(milliseconds: 500);
 
   @override
   void initState() {
@@ -55,17 +56,18 @@ class _PickPanel extends State<Pick_panel> {
     await DesktopWindow.setMinWindowSize(const Size(1280, 720));
   }
 
-//Sorting sa firstname
+//Sorting sa firstname 
   onSortColumn(int columnIndex, bool ascending) {
-    if (columnIndex == 0) {
-      if (ascending) {
-        _users.sort((a, b) => a.firstname.compareTo(b.firstname));
-      } else {
-        _users.sort((a, b) => b.firstname.compareTo(a.firstname));
-      }
+    if (_isAscending == true) {
+      _isAscending = false;
+      _users.sort((a, b) => b.firstname.compareTo(a.firstname));
+    } else {
+      _isAscending = true;
+      _users.sort((a, b) => a.firstname.compareTo(b.firstname));
     }
   }
 
+//sorting=-===
   onSelectedRow(bool selected, User _user) async {
     setState(() {
       if (selected) {

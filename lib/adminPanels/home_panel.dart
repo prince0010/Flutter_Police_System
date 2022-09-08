@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:intl/intl.dart';
@@ -11,10 +12,9 @@ import 'package:policesystem/adminPanels/pos_panel.dart';
 import 'package:policesystem/adminPanels/pur_panel.dart';
 import 'package:policesystem/adminPanels/rank_panel.dart';
 import 'package:policesystem/adminPanels/zone_panel.dart';
+import 'package:policesystem/admin_component/list_view_component.dart';
 import 'package:policesystem/api/user_data_table_api.dart';
-import 'package:policesystem/component/admin_home_datatable_components.dart';
-import 'package:policesystem/component/floating_action_button_components.dart';
-import 'package:policesystem/component/list_view_component.dart';
+import 'package:policesystem/admin_component/floating_action_button_components.dart';
 import 'package:policesystem/components/user_panel_data_rows_components.dart';
 import 'package:policesystem/model/user_model.dart';
 
@@ -25,9 +25,15 @@ class UserPanel extends StatefulWidget {
   State<UserPanel> createState() => _UserPanelState();
 }
 
+testWindowSize() async {
+  await DesktopWindow.setMaxWindowSize(const Size(1600, 900));
+  await DesktopWindow.setMinWindowSize(const Size(1280, 720));
+}
+
 class _UserPanelState extends State<UserPanel> {
   // Map data = {};
   // Object? parameters;
+  //floating action button
   final isDialOpen = ValueNotifier(false);
 
   // final Future<List<User>> _func = fetchUsers();
@@ -36,6 +42,7 @@ class _UserPanelState extends State<UserPanel> {
   void initState() {
     super.initState();
     // ascending = false;
+    testWindowSize();
     Future<List<User>> _func = fetchUsers();
     // print(_func);
   }
@@ -87,6 +94,7 @@ class _UserPanelState extends State<UserPanel> {
     // Map data = jsonDecode(jsonEncode(parameters));
     // print(data);
 
+    //floating action button
     onWillPop:
     () async {
       if (isDialOpen.value) {
@@ -106,7 +114,7 @@ class _UserPanelState extends State<UserPanel> {
           actions: [
             IconButton(
               onPressed: () {},
-              icon: Icon(Icons.login_rounded),
+              icon: const Icon(Icons.login_rounded),
             ),
           ],
         ),
@@ -125,16 +133,16 @@ class _UserPanelState extends State<UserPanel> {
                             Flexible(
                                 child: Card(
                               child: Padding(
-                                padding: const EdgeInsets.all(18.0),
+                                padding: const EdgeInsets.all(50.0),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      children: [
+                                      children: const [
                                         Icon(
                                           Icons.people,
-                                          size: 26.0,
+                                          size: 30.0,
                                         ),
                                         SizedBox(
                                           width: 15.0,
@@ -142,15 +150,16 @@ class _UserPanelState extends State<UserPanel> {
                                         Text(
                                           "Users",
                                           style: TextStyle(
-                                              fontSize: 16.0,
+                                              fontSize: 20.0,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 15.0,
+                                      height: 32.0,
                                     ),
-                                    Text(
+                                    const Text(
                                       "Total Users",
                                       style: TextStyle(
                                           fontSize: 20.0,
@@ -165,15 +174,15 @@ class _UserPanelState extends State<UserPanel> {
                             Flexible(
                                 child: Card(
                               child: Padding(
-                                padding: const EdgeInsets.all(18.0),
+                                padding: const EdgeInsets.all(50.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
-                                      children: [
+                                      children: const [
                                         Icon(
                                           Icons.article,
-                                          size: 26.0,
+                                          size: 30.0,
                                         ),
                                         SizedBox(
                                           width: 15.0,
@@ -181,13 +190,14 @@ class _UserPanelState extends State<UserPanel> {
                                         Text(
                                           "Number 2",
                                           style: TextStyle(
-                                              fontSize: 16.0,
+                                              fontSize: 20.0,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 15.0,
+                                      height: 32.0,
                                     ),
                                     Text(
                                       "Ehh",
@@ -204,7 +214,7 @@ class _UserPanelState extends State<UserPanel> {
                             Flexible(
                                 child: Card(
                               child: Padding(
-                                padding: const EdgeInsets.all(18.0),
+                                padding: const EdgeInsets.all(50.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -212,7 +222,7 @@ class _UserPanelState extends State<UserPanel> {
                                       children: [
                                         Icon(
                                           Icons.article,
-                                          size: 26.0,
+                                          size: 30.0,
                                         ),
                                         SizedBox(
                                           width: 15.0,
@@ -220,13 +230,14 @@ class _UserPanelState extends State<UserPanel> {
                                         Text(
                                           "Number 3",
                                           style: TextStyle(
-                                              fontSize: 16.0,
+                                              fontSize: 20.0,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ],
                                     ),
                                     SizedBox(
                                       width: 15.0,
+                                      height: 32.0,
                                     ),
                                     Text(
                                       "sheeesshh",
@@ -244,7 +255,7 @@ class _UserPanelState extends State<UserPanel> {
                         ),
                         //======= something section==============
                         const SizedBox(
-                          height: 40.0,
+                          height: 10.0,
                         ),
                         const Divider(
                           color: Color.fromARGB(66, 133, 133, 133),
@@ -253,7 +264,7 @@ class _UserPanelState extends State<UserPanel> {
                           thickness: 2,
                         ),
                         SizedBox(
-                          height: 40.0,
+                          height: 10.0,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -395,10 +406,10 @@ class _UserPanelState extends State<UserPanel> {
                           height: 40.0,
                         ),
                         //Data table =========================
-                        Container(
-                          child: FutureBuilder<List<User>>(
-                            future: fetchUsers(),
-                            builder: (context, snapshot) {
+                               Container(
+                                child: FutureBuilder<List<User>>(
+                               future: fetchUsers(),
+                               builder: (context, snapshot) {
                               print(snapshot);
                               if (snapshot.hasData) {
                                 // print(fetchUsers());
@@ -420,7 +431,7 @@ class _UserPanelState extends State<UserPanel> {
                                                   209, 23, 41, 146),
                                             ),
 
-                                            columns: [
+                                            columns: const [
                                               DataColumn(
                                                   label: Text(
                                                 'ID',
@@ -551,8 +562,8 @@ class _UserPanelState extends State<UserPanel> {
                                           ),
                                         ],
                                       ));
-                                } else {
-                                  return Row(
+                                      }     else {
+                                     return Row(
                                     children: <Widget>[
                                       SizedBox(
                                         // ignore: sort_child_properties_last
@@ -567,9 +578,9 @@ class _UserPanelState extends State<UserPanel> {
                                       ),
                                     ],
                                   );
-                                }
-                              } else {
-                                return Row(
+                                   }
+                              }     else {
+                                    return Row(
                                   children: <Widget>[
                                     SizedBox(
                                       // ignore: sort_child_properties_last

@@ -9,15 +9,15 @@ import 'package:policesystem/panel/signature_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class FormPanel extends StatefulWidget {
+class UserFormPanel extends StatefulWidget {
   @override
-  _FormPanelState createState() => _FormPanelState();
+  _UserFormPanelState createState() => _UserFormPanelState();
 }
 
-class _FormPanelState extends State<FormPanel> {
+class _UserFormPanelState extends State<UserFormPanel> {
   final _formKey = GlobalKey<FormState>();
-  final numberFormatter = MaskTextInputFormatter(mask: "+63 (###) ###-####");
-  final birthdayFormatter = MaskTextInputFormatter(mask: "##-##-####");
+  final maskFormatter = MaskTextInputFormatter(mask: "+63 (###) ###-####");
+  final maskFormatter2 = MaskTextInputFormatter(mask: "##-##-####");
   final heightFormatter = MaskTextInputFormatter(mask: "#'##");
   List categoryItemList = [];
   List cateogoryBarangayList = [];
@@ -35,12 +35,11 @@ class _FormPanelState extends State<FormPanel> {
     }
   }
 
+// =====================================End API CALL for zone ==========================================================
   testWindowSize() async {
     await DesktopWindow.setMaxWindowSize(const Size(1600, 900));
     await DesktopWindow.setMinWindowSize(const Size(1280, 720));
   }
-// =====================================End API CALL for zone ==========================================================
-
 // ===================================== Start API CALL for Barangay ==========================================================
 
   Future getAllBarangay() async {
@@ -66,11 +65,12 @@ class _FormPanelState extends State<FormPanel> {
   }
 
   // List of items in our dropdown menu
-  _FormPanelState() {
+  _UserFormPanelState() {
     // _barangayListSelected = _zoneListSelected;
     selectcs = civilStatus[0];
     selectsex = sex[0];
   }
+
   String selectsex = "";
   List<String> sex = ['Male', 'Female'];
 
@@ -90,7 +90,7 @@ class _FormPanelState extends State<FormPanel> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: Text('Add User'),
         backgroundColor: Color.fromARGB(221, 8, 45, 211),
       ),
       body: Container(
@@ -125,7 +125,7 @@ class _FormPanelState extends State<FormPanel> {
                     }
                   },
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 TextFormField(
                   decoration: const InputDecoration(
                     labelText: "Enter Middle Name",
@@ -133,7 +133,7 @@ class _FormPanelState extends State<FormPanel> {
                   validator: (value) {
                     if (value!.isEmpty ||
                         !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
-                      return "Input Your Full Name";
+                      return "Input Your Middle Name";
                     } else {
                       return null;
                     }
@@ -268,7 +268,7 @@ class _FormPanelState extends State<FormPanel> {
                       decoration: InputDecoration(
                         labelText: "Date of Birth (Month-Day-Year)",
                       ),
-                      inputFormatters: [birthdayFormatter],
+                      inputFormatters: [maskFormatter2],
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Enter Your Birthday";
@@ -280,7 +280,7 @@ class _FormPanelState extends State<FormPanel> {
                   ],
                 ),
 
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 Row(
                   children: <Widget>[
                     Expanded(
@@ -412,7 +412,7 @@ class _FormPanelState extends State<FormPanel> {
                   decoration: InputDecoration(
                     labelText: "Contact Number",
                   ),
-                  inputFormatters: [numberFormatter],
+                  inputFormatters: [maskFormatter],
                   validator: (value) {
                     if (value!.isEmpty) {
                       return "Enter Your Contact Number";
@@ -431,11 +431,10 @@ class _FormPanelState extends State<FormPanel> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
-                        print(_formKey);
-                        //  Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //           builder: (context) => SignaturePanel()));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => SignaturePanel()));
                       }
                       // else {
                       //   Navigator.push(
