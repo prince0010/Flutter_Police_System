@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:policesystem/admin_api/police_api.dart';
 import 'package:policesystem/admin_component/floating_action_button_components.dart';
 import 'package:policesystem/admin_component/list_view_component.dart';
-import 'package:policesystem/api/zone_api.dart';
-import 'package:policesystem/model/zone_model.dart';
+import 'package:policesystem/api/user_api.dart';
+import 'package:policesystem/model/user_model.dart';
 
-class ZonePanel extends StatefulWidget {
-  const ZonePanel({Key? key}) : super(key: key);
+class DataPage extends StatefulWidget {
+  const DataPage({Key? key}) : super(key: key);
 
   @override
-  _ZonePanelState createState() => _ZonePanelState();
+  _DataPageState createState() => _DataPageState();
 }
 
-class _ZonePanelState extends State<ZonePanel> {
+class _DataPageState extends State<DataPage> {
   final isDialOpen = ValueNotifier(false);
 
   @override
@@ -35,7 +34,7 @@ class _ZonePanelState extends State<ZonePanel> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Zone Tables'),
+          title: Text('User Tables'),
           actions: [
             IconButton(
               onPressed: () {},
@@ -45,7 +44,7 @@ class _ZonePanelState extends State<ZonePanel> {
           backgroundColor: Color.fromARGB(255, 18, 79, 103),
         ),
         body: FutureBuilder(
-          future: fetchZone(),
+          future: fetchUsers(),
           builder: (BuildContext ctx, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               return ListView(
@@ -62,7 +61,9 @@ class _ZonePanelState extends State<ZonePanel> {
                       DataColumn(label: Text('First Name')),
                       DataColumn(label: Text('Middle Name')),
                       DataColumn(label: Text('Last Name')),
-                      DataColumn(label: Text('Zone Address')),
+                      DataColumn(label: Text('Contact Number')),
+                      DataColumn(label: Text('Username')),
+                      // DataColumn(label: Text('Roles')),
                     ],
                     showCheckboxColumn: true,
                   ),
@@ -83,13 +84,13 @@ class _ZonePanelState extends State<ZonePanel> {
     );
   }
 
-  DataTableSource dataSource(List<Zone> policeList) =>
-      MyData(dataList: policeList);
+  DataTableSource dataSource(List<Users> usersList) =>
+      MyData(dataList: usersList);
 }
 
 class MyData extends DataTableSource {
   MyData({required this.dataList});
-  late final List<Zone> dataList;
+  late final List<Users> dataList;
   int _selectedCount = 0;
 
   // late List<Police> _rows;
@@ -131,8 +132,14 @@ class MyData extends DataTableSource {
           Text(dataList[index].last_name),
         ),
         DataCell(
-          Text(dataList[index].address_id.toString()),
+          Text(dataList[index].contact_no),
         ),
+        DataCell(
+          Text(dataList[index].username),
+        ),
+        // DataCell(
+        //   Text(dataList[index].roles.toString()),
+        // ),
       ],
     );
   }
@@ -185,7 +192,7 @@ class MyData extends DataTableSource {
         );
   }
 }
-
+//============COLOR SCHEMA=============
 const ColorScheme _shrineColorScheme = ColorScheme(
   primary: shrinePink100,
   // primaryVariant: shrineBrown900,

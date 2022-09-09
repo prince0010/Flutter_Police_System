@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:policesystem/model/user_model.dart';
+import 'package:policesystem/model/home_model.dart';
 
-Future<List<User>> fetchUsers() async {
+Future<List<User>> fetchUserist() async {
   var url = 'http://127.0.0.1:8000/api/users';
   var result = await http.get(Uri.parse(url));
   if (result.statusCode == 200) {

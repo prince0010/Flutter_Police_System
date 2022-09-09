@@ -1,39 +1,35 @@
 import 'dart:convert';
 
-List<Users> usersFromJson(String str) =>
-    List<Users>.from(json.decode(str).map((x) => Users.fromJson(x)));
+List<User> userFromJson(String str) =>
+    List<User>.from(json.decode(str).map((x) => User.fromJson(x)));
 
-String usersToJson(List<Users> data) =>
+String userToJson(List<User> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class Users {
+class User {
   final int id;
   final String first_name;
   final String middle_name;
   final String last_name;
   final String contact_no;
   final String username;
-  // final int roles;
   bool selected = false;
 
-  Users({
-    required this.id,
-    required this.first_name,
-    required this.middle_name,
-    required this.last_name,
-    required this.contact_no,
-    required this.username,
-    // required this.roles
-  });
+  User(
+      {required this.id,
+      required this.first_name,
+      required this.middle_name,
+      required this.last_name,
+      required this.contact_no,
+      required this.username});
 
-  factory Users.fromJson(Map<String, dynamic> json) => Users(
+  factory User.fromJson(Map<String, dynamic> json) => User(
         id: json['id'] as int,
         first_name: json['first_name'] as String,
         middle_name: json['middle_name'] as String,
         last_name: json['last_name'] as String,
         contact_no: json['contact_no'] as String,
         username: json['username'] as String,
-        // roles: json['roles'] as int,
       );
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -41,7 +37,6 @@ class Users {
         'middle_name': middle_name,
         'last_name': last_name,
         'contact_no': contact_no,
-        'username': username,
-        // 'roles': roles
+        'username': username
       };
 }

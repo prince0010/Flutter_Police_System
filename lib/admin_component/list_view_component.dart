@@ -9,7 +9,7 @@ import 'package:policesystem/adminPanels/pur_panel.dart';
 import 'package:policesystem/adminPanels/rank_panel.dart';
 import 'package:policesystem/adminPanels/home_panel.dart';
 import 'package:policesystem/adminPanels/zone_panel.dart';
-import 'package:policesystem/admin_component/admin_home_datatable_components.dart';
+import 'package:policesystem/adminPanels/user_panel.dart';
 import 'package:policesystem/adminPanels/admin_police_panel.dart';
 
 class List_view extends StatefulWidget {

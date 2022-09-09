@@ -16,7 +16,7 @@ import 'package:policesystem/admin_component/list_view_component.dart';
 import 'package:policesystem/api/user_data_table_api.dart';
 import 'package:policesystem/admin_component/floating_action_button_components.dart';
 import 'package:policesystem/components/user_panel_data_rows_components.dart';
-import 'package:policesystem/model/user_model.dart';
+import 'package:policesystem/model/home_model.dart';
 
 class UserPanel extends StatefulWidget {
   const UserPanel({Key? key}) : super(key: key);
@@ -43,56 +43,14 @@ class _UserPanelState extends State<UserPanel> {
     super.initState();
     // ascending = false;
     testWindowSize();
-    Future<List<User>> _func = fetchUsers();
+    Future<List<User>> _func = fetchUserist();
     // print(_func);
   }
 
-  // void _getData() async {
-  //   cities = await loadCatelog();
-  // }
-
-  // _initializeData() async {
-  //   // _mockPullData();\
-  //   _func = fetchUsers();
-  // }
-
-  // _mockPullData() async {
-  //   _expanded = List.generate(_currentPerPage!, (index) => false);
-
-  //   setState(() => _isLoading = true);
-  //   Future.delayed(Duration(seconds: 3)).then((value) {
-  //     _sourceOriginal.clear();
-  //     _sourceOriginal.addAll(_generateData(n: random.nextInt(10000)));
-  //     _sourceFiltered = _sourceOriginal;
-  //     _total = _sourceFiltered.length;
-  //     _source = _sourceFiltered.getRange(0, _currentPerPage!).toList();
-  //     setState(() => _isLoading = false);
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
-    // DataRow _getDataRow(index, data) {
-    //   return DataRow(
-    //     cells: <DataCell>[
-    //       DataCell(Text(data['id'])), //add name of your columns here
-    //       DataCell(Text(data['first_name'])),
-    //       DataCell(Text(data['middle_name'])),
-    //       DataCell(Text(data['last_name'])),
-    //       DataCell(Text(data['contact_no'])),
-    //       DataCell(Text(data['username'])),
-    //       DataCell(Text(data['roles'])),
-    //     ],
-    //   );
-    // }
-    // print(fetchUsers());
-
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(now);
-
-    // parameters = ModalRoute.of(context)!.settings.arguments;
-    // Map data = jsonDecode(jsonEncode(parameters));
-    // print(data);
 
     //floating action button
     onWillPop:
@@ -406,10 +364,10 @@ class _UserPanelState extends State<UserPanel> {
                           height: 40.0,
                         ),
                         //Data table =========================
-                               Container(
-                                child: FutureBuilder<List<User>>(
-                               future: fetchUsers(),
-                               builder: (context, snapshot) {
+                        Container(
+                          child: FutureBuilder<List<User>>(
+                            future: fetchUserist(),
+                            builder: (context, snapshot) {
                               print(snapshot);
                               if (snapshot.hasData) {
                                 // print(fetchUsers());
@@ -562,8 +520,8 @@ class _UserPanelState extends State<UserPanel> {
                                           ),
                                         ],
                                       ));
-                                      }     else {
-                                     return Row(
+                                } else {
+                                  return Row(
                                     children: <Widget>[
                                       SizedBox(
                                         // ignore: sort_child_properties_last
@@ -578,9 +536,9 @@ class _UserPanelState extends State<UserPanel> {
                                       ),
                                     ],
                                   );
-                                   }
-                              }     else {
-                                    return Row(
+                                }
+                              } else {
+                                return Row(
                                   children: <Widget>[
                                     SizedBox(
                                       // ignore: sort_child_properties_last
