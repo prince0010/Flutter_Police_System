@@ -2,7 +2,7 @@
 
 // import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:policesystem/admin_model/police_model.dart';
+import 'package:policesystem/model/police_model.dart';
 // import 'package:policesystem/admin_model/police_model.dart';
 
 // Future<List<Police>> fetchPolice() async {

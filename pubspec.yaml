@@ -58,6 +58,10 @@ dependencies:
   data_table_2: ^2.3.7
   provider: ^6.0.3
   dio: ^4.0.6
+  paginated_search_bar: ^1.1.2
+  advanced_datatable: ^0.0.8
+  pdf: ^3.8.3
+  printing: ^5.9.3
 
 
 

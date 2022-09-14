@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:policesystem/admin_panels/user_form_panel.dart';
+import 'package:policesystem/user_panel/user_form_panel.dart';
 
 class Speed_Dial extends StatefulWidget {
   @override

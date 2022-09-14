@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:paginated_search_bar/paginated_search_bar.dart';
-import 'package:policesystem/api/police_api.dart';
-import 'package:policesystem/admin_component/floating_action_button_components.dart';
-import 'package:policesystem/admin_component/list_view_component.dart';
-import 'package:policesystem/model/police_model.dart';
-import 'package:policesystem/api/cr_panel_api.dart';
+import 'package:policesystem/cashier/cashier_api/cashier_api.dart';
+import 'package:policesystem/cashier/cashier_components/save_button.dart';
 import 'package:policesystem/cashier/cashier_components/search_comp.dart';
-import 'package:policesystem/model/cr_model.dart';
+import 'package:policesystem/cashier/cashier_model/cashier_model.dart';
 
-class CrPanel extends StatefulWidget {
-  const CrPanel({Key? key}) : super(key: key);
+class CashierPanel extends StatefulWidget {
+  const CashierPanel({Key? key}) : super(key: key);
 
   @override
-  _CrPanelState createState() => _CrPanelState();
+  _CashierPanelState createState() => _CashierPanelState();
 }
 
-class _CrPanelState extends State<CrPanel> {
+class _CashierPanelState extends State<CashierPanel> {
   final isDialOpen = ValueNotifier(false);
   ItemPager pager = ItemPager();
+
   @override
   Widget build(BuildContext context) {
     //floating action button
@@ -38,7 +36,7 @@ class _CrPanelState extends State<CrPanel> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Criminal Records Table'),
+          title: Text('Payment Table'),
           actions: [
             IconButton(
               onPressed: () {},
@@ -48,14 +46,14 @@ class _CrPanelState extends State<CrPanel> {
           backgroundColor: Color.fromARGB(255, 18, 79, 103),
         ),
         body: FutureBuilder(
-          future: fetchCr(),
+          future: fetchPayment(),
           builder: (BuildContext ctx, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               return ListView(
                 padding: const EdgeInsets.all(16),
                 children: [
                   PaginatedSearchBar<Item>(
-                    maxHeight: 30,
+                    maxHeight: 400,
                     hintText: 'Search',
                     onSearch: ({
                       required pageIndex,
@@ -66,6 +64,10 @@ class _CrPanelState extends State<CrPanel> {
                           () {
                         if (searchQuery == "empty") {
                           return [];
+                        }
+
+                        if (pageIndex == 0) {
+                          pager = ItemPager();
                         }
 
                         return pager.next();
@@ -79,17 +81,19 @@ class _CrPanelState extends State<CrPanel> {
                       return Text(item.title);
                     },
                   ),
+                  SizedBox(
+                    height: 30.0,
+                  ),
                   PaginatedDataTable(
                     source: dataSource(snapshot.data),
                     header: Text(
-                      'Criminal Records Table',
+                      'Payment Table',
                     ),
                     rowsPerPage: 10,
                     columns: [
                       DataColumn(label: Text('ID')),
-                      DataColumn(label: Text('First Name')),
-                      DataColumn(label: Text('Middle Name')),
-                      DataColumn(label: Text('Last Name')),
+                      DataColumn(label: Text('OR Number')),
+                      // DataColumn(label: Text('Roles')),
                     ],
                     showCheckboxColumn: true,
                   ),
@@ -101,37 +105,33 @@ class _CrPanelState extends State<CrPanel> {
             return const CircularProgressIndicator();
           },
         ),
-        drawer: Drawer(
-          //====Navigation Bar====
-          child: List_view(),
-        ),
-        floatingActionButton: Speed_Dial(),
+        floatingActionButton: Confirm_Button(),
       ),
     );
   }
 
-  DataTableSource dataSource(List<Cr> crList) => MyData(crdataList: crList);
+  DataTableSource dataSource(List<Payment> PaymentList) =>
+      MyData(dataList: PaymentList);
 }
 
 class MyData extends DataTableSource {
-  MyData({required this.crdataList});
-  late final List<Cr> crdataList;
-  //pagination
+  MyData({required this.dataList});
+  late final List<Payment> dataList;
   int _selectedCount = 0;
 
   // late List<Police> _rows;
   @override
   bool get isRowCountApproximate => false;
   @override
-  int get rowCount => crdataList.length;
+  int get rowCount => dataList.length;
   @override
   int get selectedRowCount => 0;
 
   @override
   DataRow? getRow(int index) {
     assert(index >= 0);
-    if (index >= crdataList.length) return null;
-    final row = crdataList[index];
+    if (index >= dataList.length) return null;
+    final row = dataList[index];
     return DataRow.byIndex(
       index: index,
       selected: row.selected,
@@ -146,17 +146,14 @@ class MyData extends DataTableSource {
       //  return DataRow(
       cells: [
         DataCell(
-          Text(crdataList[index].id.toString()),
+          Text(dataList[index].id.toString()),
         ),
         DataCell(
-          Text(crdataList[index].first_name),
+          Text(dataList[index].or_number),
         ),
-        DataCell(
-          Text(crdataList[index].middle_name),
-        ),
-        DataCell(
-          Text(crdataList[index].last_name),
-        ),
+        // DataCell(
+        //   Text(dataList[index].roles.toString()),
+        // ),
       ],
     );
   }

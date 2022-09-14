@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:policesystem/admin_api/police_api.dart';
+import 'package:paginated_search_bar/paginated_search_bar.dart';
+import 'package:policesystem/api/police_api.dart';
 import 'package:policesystem/admin_component/floating_action_button_components.dart';
 import 'package:policesystem/admin_component/list_view_component.dart';
 import 'package:policesystem/api/zone_api.dart';
+import 'package:policesystem/cashier/cashier_components/search_comp.dart';
 import 'package:policesystem/model/zone_model.dart';
 
 class ZonePanel extends StatefulWidget {
@@ -14,7 +16,7 @@ class ZonePanel extends StatefulWidget {
 
 class _ZonePanelState extends State<ZonePanel> {
   final isDialOpen = ValueNotifier(false);
-
+  ItemPager pager = ItemPager();
   @override
   Widget build(BuildContext context) {
     //floating action button
@@ -51,6 +53,31 @@ class _ZonePanelState extends State<ZonePanel> {
               return ListView(
                 padding: const EdgeInsets.all(16),
                 children: [
+                  PaginatedSearchBar<Item>(
+                    maxHeight: 30,
+                    hintText: 'Search',
+                    onSearch: ({
+                      required pageIndex,
+                      required pageSize,
+                      required searchQuery,
+                    }) async {
+                      return Future.delayed(const Duration(milliseconds: 1300),
+                          () {
+                        if (searchQuery == "empty") {
+                          return [];
+                        }
+
+                        return pager.next();
+                      });
+                    },
+                    itemBuilder: (
+                      context, {
+                      required item,
+                      required index,
+                    }) {
+                      return Text(item.title);
+                    },
+                  ),
                   PaginatedDataTable(
                     source: dataSource(snapshot.data),
                     header: Text(

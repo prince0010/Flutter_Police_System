@@ -35,7 +35,7 @@ class _UserPanelState extends State<UserPanel> {
   // Object? parameters;
   //floating action button
   final isDialOpen = ValueNotifier(false);
-
+  String? _searchKey = "Last Name";
   // final Future<List<User>> _func = fetchUsers();
 
   @override
@@ -256,20 +256,28 @@ class _UserPanelState extends State<UserPanel> {
                               ],
                             ),
                             Container(
-                              width: 500.0,
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  hintText: "Search the Name",
-                                  prefixIcon: Icon(
-                                    Icons.search,
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.black26),
-                                  ),
-                                ),
-                              ),
-                            ),
+                                width: 500.0,
+                                child: TextField(
+                                  decoration: InputDecoration(
+                                      hintText: 'Enter search term based on ' +
+                                          _searchKey!.replaceAll(
+                                              new RegExp('[\\W_]+'), ' '),
+                                      prefixIcon: IconButton(
+                                          icon: Icon(Icons.cancel),
+                                          onPressed: () {
+                                            setState(() {
+                                              // _isSearch = false;
+                                            });
+                                            //i reset ang mga researches pag i click ang cancel icon which is katong x na icon
+                                            // _initializeData();
+                                          }),
+                                      suffixIcon: IconButton(
+                                          icon: Icon(Icons.search),
+                                          onPressed: () {})),
+                                  onSubmitted: (value) {
+                                    // _filterData(value);
+                                  },
+                                )),
                           ],
                         ),
                         SizedBox(
@@ -557,43 +565,7 @@ class _UserPanelState extends State<UserPanel> {
                             },
                           ),
                         ),
-                        // Column(
-                        //   crossAxisAlignment: CrossAxisAlignment.stretch,
-                        //   children: [
-                        //     DataTable(
-                        //       columns: [
-                        //         DataColumn(label: Text("Id")),
-                        //         DataColumn(label: Text("First name")),
-                        //         DataColumn(label: Text("Middle name")),
-                        //         DataColumn(label: Text("Last name")),
-                        //         DataColumn(label: Text("Date")),
-                        //         DataColumn(label: Text("Contact Number")),
-                        //         DataColumn(label: Text("Username")),
-                        //         DataColumn(label: Text("Role")),
-                        //       ],
-                        //       headingRowColor:
-                        //           MaterialStateProperty.resolveWith(
-                        //               (states) => Colors.grey.shade200),
-                        //       rows: [
-                        //         DataRow(
-                        //           cells: [
-                        //             DataCell(Text("01")),
-                        //             DataCell(Text("Prince")),
-                        //             DataCell(Text("Oro")),
-                        //             DataCell(Text("Nagac")),
-                        //             DataCell(Text("${formattedDate}")),
-                        //             DataCell(Text(
-                        //                 "983, Zone 2 Kauswagan Cagayan De Oro City")),
-                        //             DataCell(Text("0392424324")),
-                        //             DataCell(Text("USer")),
-                        //           ],
-                        //         )
-                        //       ],
-                        //     )
 
-                        //     //naa dari ang mga data table og rows naa sa components
-                        //   ],
-                        // ),
                         //set the Pagination
                         SizedBox(
                           height: 20.0,

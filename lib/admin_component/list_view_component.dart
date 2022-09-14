@@ -40,12 +40,12 @@ class _List_viewState extends State<List_view> {
           leading: const Icon(Icons.supervised_user_circle),
           title: const Text("Users"),
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DataPage(),
-              ),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => DataPage(),
+            //   ),
+            // );
           },
         ),
         SizedBox(height: 10.0),
@@ -82,7 +82,7 @@ class _List_viewState extends State<List_view> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => POSpanel(),
+                builder: (context) => Pospanel(),
               ),
             );
           },
