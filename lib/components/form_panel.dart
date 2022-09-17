@@ -432,10 +432,10 @@ class _FormPanelState extends State<FormPanel> {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
                         print(_formKey);
-                        //  Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //           builder: (context) => SignaturePanel()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignaturePanel()));
                       }
                       // else {
                       //   Navigator.push(

@@ -239,17 +239,25 @@ class ExampleSource extends AdvancedDataTableSource<Users> {
 
   @override
   Future<RemoteDataSourceDetails<Users>> getNextPage(
-      NextPageRequest pageRequest) async {
-    return RemoteDataSourceDetails(
-      // data.length,
-      // data
-      //     .skip(pageRequest.offset)
-      //     .take(pageRequest.pageSize)
-      //     .toList(), //again in a real world example you would only get the right amount of rows
-      data.length,
-      (data.length as List<dynamic>)
-          .map((e) => Users.fromPagedJson(e))
-          .toList(),
-    );
+      NextPageRequest pageRequest) {
+    // TODO: implement getNextPage
+    throw UnimplementedError();
   }
+
+  // @override
+  // Future<RemoteDataSourceDetails<Users>> getNextPage(
+  //     NextPageRequest pageRequest) async {
+  //   return RemoteDataSourceDetails(
+  //     // data.length,
+  //     // data
+  //     //     .skip(pageRequest.offset)
+  //     //     .take(pageRequest.pageSize)
+  //     //     .toList(), //again in a real world example you would only get the right amount of rows
+  //     // data.length,
+  //     // (data.length as List<dynamic>)
+  //     //     .map((e) => Users.fromPagedJson(e))
+  //     //     .toList(),
+  //   );
+  // }
+// }
 }

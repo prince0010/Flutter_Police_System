@@ -62,7 +62,12 @@ dependencies:
   advanced_datatable: ^0.0.8
   pdf: ^3.8.3
   printing: ^5.9.3
-
+  open_file: ^3.2.0
+  flutter_signature_pad: ^3.0.1
+  signature: ^5.2.1
+  camera_windows: ^0.2.1+1
+  responsive_framework: ^0.2.0
+  
 
 
 dev_dependencies:

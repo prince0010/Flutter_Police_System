@@ -421,12 +421,10 @@ class _FormPanelState extends State<FormPanel> {
                       maximumSize: Size(80, 50),
                     ),
                     onPressed: () {
-                      // else {
-                      //   Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //           builder: (context) => SignaturePanel()));
-                      // }
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SignaturePanel()));
                     },
                     child: Text('Next')),
                 SizedBox(height: 16),

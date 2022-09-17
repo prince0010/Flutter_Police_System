@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   bitsdojo_window_windows
+  camera_windows
   desktop_window
   flutter_acrylic
   printing
