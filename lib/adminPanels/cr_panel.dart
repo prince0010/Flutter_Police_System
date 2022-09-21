@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:paginated_search_bar/paginated_search_bar.dart';
-import 'package:policesystem/api/police_api.dart';
-import 'package:policesystem/admin_component/floating_action_button_components.dart';
 import 'package:policesystem/admin_component/list_view_component.dart';
-import 'package:policesystem/model/police_model.dart';
 import 'package:policesystem/api/cr_panel_api.dart';
 import 'package:policesystem/cashier/cashier_components/search_comp.dart';
 import 'package:policesystem/model/cr_model.dart';
+
+import '../Floating Action Button/criminal_records_floating_action_button_comp.dart';
 
 class CrPanel extends StatefulWidget {
   const CrPanel({Key? key}) : super(key: key);
@@ -16,6 +15,7 @@ class CrPanel extends StatefulWidget {
 }
 
 class _CrPanelState extends State<CrPanel> {
+  var rowsPerPage = PaginatedDataTable.defaultRowsPerPage;
   final isDialOpen = ValueNotifier(false);
   ItemPager pager = ItemPager();
   @override
@@ -84,12 +84,22 @@ class _CrPanelState extends State<CrPanel> {
                     header: Text(
                       'Criminal Records Table',
                     ),
-                    rowsPerPage: 10,
+                    rowsPerPage: rowsPerPage,
+                    showFirstLastButtons: true,
+                    availableRowsPerPage: [1, 5, 10, 30, 50],
+                    onRowsPerPageChanged: (newRowsPerPage) {
+                      if (newRowsPerPage != null) {
+                        setState(() {
+                          rowsPerPage = newRowsPerPage;
+                        });
+                      }
+                    },
                     columns: [
                       DataColumn(label: Text('ID')),
                       DataColumn(label: Text('First Name')),
                       DataColumn(label: Text('Middle Name')),
                       DataColumn(label: Text('Last Name')),
+                      // DataColumn(label: Text('Date of Birth')),
                     ],
                     showCheckboxColumn: true,
                   ),
@@ -105,7 +115,7 @@ class _CrPanelState extends State<CrPanel> {
           //====Navigation Bar====
           child: List_view(),
         ),
-        floatingActionButton: Speed_Dial(),
+        floatingActionButton: Speed_Dial6(),
       ),
     );
   }
@@ -157,6 +167,9 @@ class MyData extends DataTableSource {
         DataCell(
           Text(crdataList[index].last_name),
         ),
+        // DataCell(
+        //   Text(crdataList[index].date_of_birth),
+        // ),
       ],
     );
   }

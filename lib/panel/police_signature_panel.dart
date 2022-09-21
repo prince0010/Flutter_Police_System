@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:policesystem/panel/camera_panel.dart';
 import 'package:signature/signature.dart';
 
-class SignaturePanel extends StatefulWidget {
-  const SignaturePanel({Key? key}) : super(key: key);
+class PoliceSignaturePanel extends StatefulWidget {
+  const PoliceSignaturePanel({Key? key}) : super(key: key);
 
   @override
-  State<SignaturePanel> createState() => _SignaturePanelState();
+  State<PoliceSignaturePanel> createState() => _PoliceSignaturePanelState();
 }
 
-class _SignaturePanelState extends State<SignaturePanel> {
+class _PoliceSignaturePanelState extends State<PoliceSignaturePanel> {
   final SignatureController _controller = SignatureController(
     penStrokeWidth: 4.0,
     exportBackgroundColor: Colors.white,
@@ -24,8 +24,6 @@ class _SignaturePanelState extends State<SignaturePanel> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Signature Panel'),
-        foregroundColor: Color.fromARGB(221, 0, 0, 0),
-        backgroundColor: Color.fromARGB(221, 250, 250, 250),
       ),
       body: ListView(
         children: [
@@ -103,16 +101,16 @@ class _SignaturePanelState extends State<SignaturePanel> {
                                         MaterialButton(
                                           onPressed: () {
                                             if (_controller != null) {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          CameraPanel()));
+                                              // Navigator.push(
+                                              //     context,
+                                              //     MaterialPageRoute(
+                                              //         builder: (context) =>
+                                              //             CameraPanel()));
                                             } else {
                                               Navigator.of(context).pop(false);
                                             }
                                           },
-                                          child: Text('Yes'),
+                                          child: Text('Add'),
                                         ),
                                         MaterialButton(
                                           onPressed: () {

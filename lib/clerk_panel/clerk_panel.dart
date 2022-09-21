@@ -56,7 +56,7 @@ class _PickPanel extends State<Pick_panel> {
     await DesktopWindow.setMinWindowSize(const Size(1280, 720));
   }
 
-//Sorting sa firstname 
+//Sorting sa firstname
   onSortColumn(int columnIndex, bool ascending) {
     if (_isAscending == true) {
       _isAscending = false;
@@ -243,7 +243,7 @@ class _PickPanel extends State<Pick_panel> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add User Profile'),
+        title: const Text('Clerk Panel'),
         leading: IconButton(
           icon: Icon(
             Icons.add,

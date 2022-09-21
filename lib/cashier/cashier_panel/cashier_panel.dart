@@ -13,6 +13,7 @@ class CashierPanel extends StatefulWidget {
 }
 
 class _CashierPanelState extends State<CashierPanel> {
+  var rowsPerPage = PaginatedDataTable.defaultRowsPerPage;
   final isDialOpen = ValueNotifier(false);
   ItemPager pager = ItemPager();
 
@@ -89,7 +90,16 @@ class _CashierPanelState extends State<CashierPanel> {
                     header: Text(
                       'Payment Table',
                     ),
-                    rowsPerPage: 10,
+                    rowsPerPage: rowsPerPage,
+                    showFirstLastButtons: true,
+                    availableRowsPerPage: [1, 5, 10, 30, 50],
+                    onRowsPerPageChanged: (newRowsPerPage) {
+                      if (newRowsPerPage != null) {
+                        setState(() {
+                          rowsPerPage = newRowsPerPage;
+                        });
+                      }
+                    },
                     columns: [
                       DataColumn(label: Text('ID')),
                       DataColumn(label: Text('OR Number')),

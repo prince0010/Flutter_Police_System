@@ -18,6 +18,7 @@ import 'package:policesystem/model/police_model.dart';
 
 Future<List> fetchPolice() async {
   Uri url = Uri.parse("http://127.0.0.1:8000/api/police");
+  //endpoint
   final response = await http.get(url);
   return employeesFromJson(response.body);
 }

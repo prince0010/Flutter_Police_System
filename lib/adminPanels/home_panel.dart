@@ -2,21 +2,11 @@ import 'dart:convert';
 
 import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:intl/intl.dart';
-import 'package:policesystem/adminPanels/barangay_panel.dart';
-import 'package:policesystem/adminPanels/co_panel.dart';
-import 'package:policesystem/adminPanels/cr_panel.dart';
-import 'package:policesystem/adminPanels/police_panel.dart';
-import 'package:policesystem/adminPanels/pos_panel.dart';
-import 'package:policesystem/adminPanels/pur_panel.dart';
-import 'package:policesystem/adminPanels/rank_panel.dart';
-import 'package:policesystem/adminPanels/zone_panel.dart';
 import 'package:policesystem/admin_component/list_view_component.dart';
 import 'package:policesystem/api/user_data_table_api.dart';
-import 'package:policesystem/admin_component/floating_action_button_components.dart';
-import 'package:policesystem/components/user_panel_data_rows_components.dart';
 import 'package:policesystem/model/home_model.dart';
+import 'package:http/http.dart' as http;
+import '../Floating Action Button/floating_action_button_components.dart';
 
 class UserPanel extends StatefulWidget {
   const UserPanel({Key? key}) : super(key: key);
@@ -31,6 +21,7 @@ testWindowSize() async {
 }
 
 class _UserPanelState extends State<UserPanel> {
+  bool isloading = false;
   // Map data = {};
   // Object? parameters;
   //floating action button
@@ -41,17 +32,349 @@ class _UserPanelState extends State<UserPanel> {
   @override
   void initState() {
     super.initState();
+    this.fetchUser();
     // ascending = false;
     testWindowSize();
     Future<List<User>> _func = fetchUserist();
     // print(_func);
   }
 
+  List user = [];
+  fetchUser() async {
+    setState(() {
+      isloading = true;
+    });
+    var url = "http://127.0.0.1:8000/api/police";
+    var response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      var items = json.decode(response.body);
+      setState(() {
+        user = items;
+        isloading = false;
+      });
+    } else {
+      setState(() {
+        user = [];
+        isloading = false;
+      });
+    }
+  }
+
+  Widget getCard(index) {
+    var fullName = index['first_name'] +
+        " " +
+        index["middle_name"] +
+        " " +
+        index["last_name"];
+    var position = index['position_id'];
+
+    return Column(
+      children: [
+        SizedBox(
+          child: Padding(
+            padding: const EdgeInsets.only(
+              right: 40.0, //kani
+            ),
+            child: Flexible(
+              child: Card(
+                child: ListTile(
+                  title: Row(children: <Widget>[
+                    Container(
+                      width: 60.0,
+                      height: 60.0,
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(186, 96, 221, 243),
+                        borderRadius: BorderRadius.circular(60 / 2),
+                        image: new DecorationImage(
+                          image: new AssetImage("assets/police-logo.jpeg"),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                              child: Text(
+                            fullName.toString(),
+                            style: TextStyle(fontSize: 17),
+                          )),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            position.toString(),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 143, 143, 143)),
+                          ),
+                        ]),
+                  ]),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget getBody() {
+    if (user.contains(null) || user.length < 0 || isloading) {
+      return Center(
+          child: CircularProgressIndicator(
+        valueColor: new AlwaysStoppedAnimation<Color>(
+            Color.fromARGB(186, 96, 221, 243)),
+      ));
+    }
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.only(top: 30.0),
+        child: Column(
+          children: [
+            Container(
+                // padding: EdgeInsets.only(right: 1380.0, bottom: 14.0),
+                padding: EdgeInsets.only(bottom: 14.0),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: Container(
+                      child: Row(
+                    children: [
+                      Icon(
+                        Icons.home,
+                        size: 23.0,
+                      ),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      Text("Dashboard", style: TextStyle(fontSize: 23.0))
+                    ],
+                  )),
+                )),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SizedBox(
+                  width: 10.0,
+                ),
+                Expanded(
+                    child: Container(
+                  decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 103, 171, 248),
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(8.0))),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      bottom: 30.0,
+                      left: 50.0,
+                      right: 50.0,
+                      top: 40.0,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          children: const [
+                            Icon(
+                              Icons.people,
+                              size: 30.0,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 15.0,
+                            ),
+                            Text(
+                              "Users",
+                              style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          width: 15.0,
+                          height: 32.0,
+                        ),
+                        const Text(
+                          "Total Users",
+                          style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 228, 228, 228)),
+                        ),
+                      ],
+                    ),
+                  ),
+                )),
+                SizedBox(
+                  width: 20.0,
+                ),
+                Expanded(
+                    child: Container(
+                  decoration: BoxDecoration(
+                      color: Color.fromARGB(192, 255, 160, 105),
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(8.0))),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      bottom: 30.0,
+                      left: 50.0,
+                      right: 50.0,
+                      top: 40.0,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          children: const [
+                            Icon(
+                              Icons.people,
+                              size: 30.0,
+                              color: Color.fromARGB(255, 0, 0, 0),
+                            ),
+                            SizedBox(
+                              width: 15.0,
+                            ),
+                            Text(
+                              "Users",
+                              style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 0, 0, 0)),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          width: 15.0,
+                          height: 32.0,
+                        ),
+                        const Text(
+                          "Ehh",
+                          style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 0, 0, 0)),
+                        ),
+                      ],
+                    ),
+                  ),
+                )),
+                SizedBox(
+                  width: 20.0,
+                ),
+                Expanded(
+                    child: Container(
+                  decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 57, 216, 163),
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(8.0))),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      bottom: 30.0,
+                      left: 50.0,
+                      right: 50.0,
+                      top: 40.0,
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(
+                          children: const [
+                            Icon(
+                              Icons.people,
+                              size: 30.0,
+                              color: Color.fromARGB(255, 255, 255, 255),
+                            ),
+                            SizedBox(
+                              width: 15.0,
+                            ),
+                            Text(
+                              "Total Users",
+                              style: TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color.fromARGB(255, 255, 255, 255)),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          width: 15.0,
+                          height: 32.0,
+                        ),
+                        const Text(
+                          "69",
+                          style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 255, 255, 255)),
+                        ),
+                      ],
+                    ),
+                  ),
+                )),
+                SizedBox(
+                  width: 10.0,
+                ),
+              ],
+            ),
+            Container(
+              margin: const EdgeInsets.only(
+                top: 30,
+                bottom: 60.0,
+              ),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                elevation: 5,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding:
+                          EdgeInsets.only(left: 750.0, top: 15.0, bottom: 15.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Police",
+                            style: TextStyle(
+                                fontSize: 26.0,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue),
+                          ),
+                          SizedBox(
+                            width: 4.0,
+                          ),
+                          Icon(Icons.local_police_outlined, color: Colors.blue),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 500,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: user.length,
+                          itemBuilder: ((context, index) {
+                            return getCard(user[index]);
+                          })),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    DateTime now = DateTime.now();
-    String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(now);
-
     //floating action button
     onWillPop:
     () async {
@@ -68,7 +391,7 @@ class _UserPanelState extends State<UserPanel> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Text("HOME PANEL"),
+          title: Text("Dashboard"),
           actions: [
             IconButton(
               onPressed: () {},
@@ -76,538 +399,10 @@ class _UserPanelState extends State<UserPanel> {
             ),
           ],
         ),
-        body: Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(10.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Flexible(
-                                child: Card(
-                              child: Padding(
-                                padding: const EdgeInsets.all(50.0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: const [
-                                        Icon(
-                                          Icons.people,
-                                          size: 30.0,
-                                        ),
-                                        SizedBox(
-                                          width: 15.0,
-                                        ),
-                                        Text(
-                                          "Users",
-                                          style: TextStyle(
-                                              fontSize: 20.0,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      width: 15.0,
-                                      height: 32.0,
-                                    ),
-                                    const Text(
-                                      "Total Users",
-                                      style: TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold,
-                                          color:
-                                              Color.fromARGB(255, 83, 163, 87)),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )),
-                            Flexible(
-                                child: Card(
-                              child: Padding(
-                                padding: const EdgeInsets.all(50.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: const [
-                                        Icon(
-                                          Icons.article,
-                                          size: 30.0,
-                                        ),
-                                        SizedBox(
-                                          width: 15.0,
-                                        ),
-                                        Text(
-                                          "Number 2",
-                                          style: TextStyle(
-                                              fontSize: 20.0,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      width: 15.0,
-                                      height: 32.0,
-                                    ),
-                                    Text(
-                                      "Ehh",
-                                      style: TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color.fromARGB(
-                                              255, 233, 157, 57)),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )),
-                            Flexible(
-                                child: Card(
-                              child: Padding(
-                                padding: const EdgeInsets.all(50.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.article,
-                                          size: 30.0,
-                                        ),
-                                        SizedBox(
-                                          width: 15.0,
-                                        ),
-                                        Text(
-                                          "Number 3",
-                                          style: TextStyle(
-                                              fontSize: 20.0,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      width: 15.0,
-                                      height: 32.0,
-                                    ),
-                                    Text(
-                                      "sheeesshh",
-                                      style: TextStyle(
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color.fromARGB(
-                                              255, 233, 157, 57)),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )),
-                          ],
-                        ),
-                        //======= something section==============
-                        const SizedBox(
-                          height: 10.0,
-                        ),
-                        const Divider(
-                          color: Color.fromARGB(66, 133, 133, 133),
-                          indent: 20.0,
-                          endIndent: 10.0,
-                          thickness: 2,
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 100.0),
-                                  child: Text(
-                                    "Home Records",
-                                    style: TextStyle(
-                                      fontSize: 50.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 15.0,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 80.0),
-                                  child: Text(
-                                    "9,000,000,000",
-                                    style: TextStyle(
-                                      fontSize: 25.0,
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.grey[500],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Container(
-                                width: 500.0,
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                      hintText: 'Enter search term based on ' +
-                                          _searchKey!.replaceAll(
-                                              new RegExp('[\\W_]+'), ' '),
-                                      prefixIcon: IconButton(
-                                          icon: Icon(Icons.cancel),
-                                          onPressed: () {
-                                            setState(() {
-                                              // _isSearch = false;
-                                            });
-                                            //i reset ang mga researches pag i click ang cancel icon which is katong x na icon
-                                            // _initializeData();
-                                          }),
-                                      suffixIcon: IconButton(
-                                          icon: Icon(Icons.search),
-                                          onPressed: () {})),
-                                  onSubmitted: (value) {
-                                    // _filterData(value);
-                                  },
-                                )),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20.0,
-                        ),
-                        //============Set up the filter section
-                        const Divider(
-                          color: Color.fromARGB(66, 133, 133, 133),
-                          indent: 20.0,
-                          endIndent: 10.0,
-                          thickness: 2,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // Text(
-                            //   data['location'],
-                            //   style: TextStyle(
-                            //     fontSize: 20.0,
-                            //     fontWeight: FontWeight.bold,
-                            //   ),
-                            // ),
+        body: getBody(),
 
-                            TextButton.icon(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.watch_later_rounded,
-                                color: Colors.deepPurple.shade400,
-                              ),
-                              label: Text(
-                                "${formattedDate}",
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.deepPurple.shade400,
-                                ),
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                DropdownButton(
-                                  hint: Text("Filter by: "),
-                                  items: [
-                                    DropdownMenuItem(
-                                      child: Text('Time'),
-                                      value: "qwe",
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text('Date'),
-                                      value: "qwe",
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text('Name'),
-                                      value: "qwe",
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text('Year'),
-                                      value: "qwe",
-                                    ),
-                                  ],
-                                  onChanged: (val) {},
-                                ),
-                                SizedBox(
-                                  width: 40.0,
-                                ),
-                                DropdownButton(
-                                  hint: Text("Order by: "),
-                                  items: [
-                                    DropdownMenuItem(
-                                      child: Text('Time'),
-                                      value: "qwe",
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text('Date'),
-                                      value: "qwe",
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text('Name'),
-                                      value: "qwe",
-                                    ),
-                                    DropdownMenuItem(
-                                      child: Text('Year'),
-                                      value: "qwe",
-                                    ),
-                                  ],
-                                  onChanged: (val) {},
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 40.0,
-                        ),
-                        //Data table =========================
-                        Container(
-                          child: FutureBuilder<List<User>>(
-                            future: fetchUserist(),
-                            builder: (context, snapshot) {
-                              print(snapshot);
-                              if (snapshot.hasData) {
-                                // print(fetchUsers());
-                                List<User>? data = snapshot.data;
-                                // print(data);
-                                if (data != null) {
-                                  return Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.grey),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: [
-                                          DataTable(
-                                            headingRowColor:
-                                                MaterialStateColor.resolveWith(
-                                              (states) => Color.fromARGB(
-                                                  209, 23, 41, 146),
-                                            ),
+        //this is first container
 
-                                            columns: const [
-                                              DataColumn(
-                                                  label: Text(
-                                                'ID',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              )),
-                                              DataColumn(
-                                                  label: Text(
-                                                'First Name',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              )),
-                                              DataColumn(
-                                                  label: Text(
-                                                'Middle Name',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              )),
-                                              DataColumn(
-                                                  label: Text(
-                                                'Last Name',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              )),
-                                              DataColumn(
-                                                  label: Text(
-                                                'Contact Number',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              )),
-                                              DataColumn(
-                                                  label: Text(
-                                                'Username',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              )),
-                                            ],
-                                            // rows: List.generate(
-                                            //   results.length,
-                                            //   (index) => _getDataRow(
-                                            //     index,
-                                            //     results[index],
-                                            //   ),
-                                            // ),
-                                            rows: data
-                                                .map((user) => DataRow(cells: [
-                                                      DataCell(Container(
-                                                        width: 100,
-                                                        child: Text(
-                                                          user.id.toString(),
-                                                          softWrap: true,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        ),
-                                                      )),
-                                                      DataCell(Container(
-                                                        width: 100,
-                                                        child: Text(
-                                                          user.first_name,
-                                                          softWrap: true,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        ),
-                                                      )),
-                                                      DataCell(Container(
-                                                        width: 100,
-                                                        child: Text(
-                                                          user.middle_name,
-                                                          softWrap: true,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        ),
-                                                      )),
-                                                      DataCell(Container(
-                                                        width: 100,
-                                                        child: Text(
-                                                          user.last_name,
-                                                          softWrap: true,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        ),
-                                                      )),
-                                                      DataCell(Container(
-                                                        width: 100,
-                                                        child: Text(
-                                                          user.contact_no,
-                                                          softWrap: true,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        ),
-                                                      )),
-                                                      DataCell(Container(
-                                                        width: 100,
-                                                        child: Text(
-                                                          user.username,
-                                                          softWrap: true,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        ),
-                                                      ))
-                                                    ]))
-                                                .toList(),
-                                            showBottomBorder: true,
-                                          ),
-                                        ],
-                                      ));
-                                } else {
-                                  return Row(
-                                    children: <Widget>[
-                                      SizedBox(
-                                        // ignore: sort_child_properties_last
-                                        child: CircularProgressIndicator(),
-                                        width: 30,
-                                        height: 30,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.all(40),
-                                        child: Text('2'),
-                                        // child: Text('No Data Found...'),
-                                      ),
-                                    ],
-                                  );
-                                }
-                              } else {
-                                return Row(
-                                  children: <Widget>[
-                                    SizedBox(
-                                      // ignore: sort_child_properties_last
-                                      child: CircularProgressIndicator(),
-                                      width: 30,
-                                      height: 30,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.all(40),
-                                      child: Text('1'),
-                                      // child: Text('No Data Found...'),
-                                    ),
-                                  ],
-                                );
-                              }
-                            },
-                          ),
-                        ),
-
-                        //set the Pagination
-                        SizedBox(
-                          height: 20.0,
-                        ),
-                        Row(
-                          children: [
-                            TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "1",
-                                style: TextStyle(color: Colors.deepPurple),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "2",
-                                style: TextStyle(color: Colors.deepPurple),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "3",
-                                style: TextStyle(color: Colors.deepPurple),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                "See All",
-                                style: TextStyle(color: Colors.deepPurple),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ]),
-                ),
-              ),
-            ),
-          ],
-        ),
         drawer: Drawer(
           //====Navigation Bar====
           child: List_view(),

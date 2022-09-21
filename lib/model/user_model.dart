@@ -65,4 +65,7 @@ class Users {
         'username': username,
         // 'roles': roles
       };
+
+  // getRow(void Function(String id, bool newSelectState) selectedRow,
+  //     List<String> selectedIds) {}
 }

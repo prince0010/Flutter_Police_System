@@ -11,7 +11,7 @@ class Cr {
   final String first_name;
   final String middle_name;
   final String last_name;
-  final String contact_no;
+  // final String date_of_birth;
   bool selected = false;
 
   Cr({
@@ -19,7 +19,7 @@ class Cr {
     required this.first_name,
     required this.middle_name,
     required this.last_name,
-    required this.contact_no,
+    // required this.date_of_birth
   });
 
   factory Cr.fromJson(Map<String, dynamic> json) => Cr(
@@ -27,13 +27,13 @@ class Cr {
         first_name: json['first_name'] as String,
         middle_name: json['middle_name'] as String,
         last_name: json['last_name'] as String,
-        contact_no: json['contact_no'] as String,
+        // date_of_birth: json['date_of_birth'] as String
       );
   Map<String, dynamic> toJson() => {
         'id': id,
         'first_name': first_name,
         'middle_name': middle_name,
         'last_name': last_name,
-        'contact_no': contact_no,
+        // 'date_of_birth': date_of_birth,
       };
 }

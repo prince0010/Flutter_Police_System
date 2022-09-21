@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:paginated_search_bar/paginated_search_bar.dart';
-import 'package:policesystem/admin_component/floating_action_button_components.dart';
 import 'package:policesystem/admin_component/list_view_component.dart';
 import 'package:policesystem/api/co_panel_api.dart';
-import 'package:policesystem/api/cr_panel_api.dart';
 import 'package:policesystem/cashier/cashier_components/search_comp.dart';
 import 'package:policesystem/model/co_model.dart';
-import 'package:policesystem/model/cr_model.dart';
+
+import '../Floating Action Button/criminal_offense_floating_action_button_comp.dart';
 
 class CoPanel extends StatefulWidget {
   const CoPanel({Key? key}) : super(key: key);
@@ -16,6 +15,7 @@ class CoPanel extends StatefulWidget {
 }
 
 class _CoPanelState extends State<CoPanel> {
+  var rowsPerPage = PaginatedDataTable.defaultRowsPerPage;
   final isDialOpen = ValueNotifier(false);
   ItemPager pager = ItemPager();
   @override
@@ -84,10 +84,20 @@ class _CoPanelState extends State<CoPanel> {
                     header: Text(
                       'Criminal Offense Table',
                     ),
-                    rowsPerPage: 10,
+                    rowsPerPage: rowsPerPage,
+                    showFirstLastButtons: true,
+                    availableRowsPerPage: [1, 5, 10, 30, 50],
+                    onRowsPerPageChanged: (newRowsPerPage) {
+                      if (newRowsPerPage != null) {
+                        setState(() {
+                          rowsPerPage = newRowsPerPage;
+                        });
+                      }
+                    },
                     columns: [
                       DataColumn(label: Text('ID')),
                       DataColumn(label: Text('Name')),
+                      DataColumn(label: Text(' '))
                     ],
                     showCheckboxColumn: true,
                   ),
@@ -103,7 +113,7 @@ class _CoPanelState extends State<CoPanel> {
           //====Navigation Bar====
           child: List_view(),
         ),
-        floatingActionButton: Speed_Dial(),
+        floatingActionButton: Speed_Dial5(),
       ),
     );
   }
@@ -148,6 +158,12 @@ class MyData extends DataTableSource {
         ),
         DataCell(
           Text(crdataList[index].name),
+        ),
+        DataCell(
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {},
+          ),
         ),
       ],
     );

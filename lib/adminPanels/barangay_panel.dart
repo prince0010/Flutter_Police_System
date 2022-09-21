@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:paginated_search_bar/paginated_search_bar.dart';
-import 'package:policesystem/api/police_api.dart';
-import 'package:policesystem/admin_component/floating_action_button_components.dart';
 import 'package:policesystem/admin_component/list_view_component.dart';
 import 'package:policesystem/api/zone_api.dart';
 import 'package:policesystem/cashier/cashier_components/search_comp.dart';
 import 'package:policesystem/model/zone_model.dart';
+
+import '../Floating Action Button/floating_action_button_components.dart';
 
 class BarangayPanel extends StatefulWidget {
   const BarangayPanel({Key? key}) : super(key: key);
@@ -15,6 +15,7 @@ class BarangayPanel extends StatefulWidget {
 }
 
 class _BarangayPanelState extends State<BarangayPanel> {
+  var rowsPerPage = PaginatedDataTable.defaultRowsPerPage;
   final isDialOpen = ValueNotifier(false);
   ItemPager pager = ItemPager();
   @override
@@ -83,13 +84,23 @@ class _BarangayPanelState extends State<BarangayPanel> {
                     header: Text(
                       'Display Table',
                     ),
-                    rowsPerPage: 10,
+                    rowsPerPage: rowsPerPage,
+                    showFirstLastButtons: true,
+                    availableRowsPerPage: [1, 5, 10, 30, 50],
+                    onRowsPerPageChanged: (newRowsPerPage) {
+                      if (newRowsPerPage != null) {
+                        setState(() {
+                          rowsPerPage = newRowsPerPage;
+                        });
+                      }
+                    },
                     columns: [
                       DataColumn(label: Text('ID')),
                       DataColumn(label: Text('First Name')),
                       DataColumn(label: Text('Middle Name')),
                       DataColumn(label: Text('Last Name')),
                       DataColumn(label: Text('Barangay Address')),
+                      DataColumn(label: Text('')),
                     ],
                     showCheckboxColumn: true,
                   ),
@@ -159,6 +170,12 @@ class MyData extends DataTableSource {
         ),
         DataCell(
           Text(dataList[index].address_id.toString()), //barangay
+        ),
+        DataCell(
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {},
+          ),
         ),
       ],
     );

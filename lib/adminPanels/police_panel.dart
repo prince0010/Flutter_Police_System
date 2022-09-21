@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:paginated_search_bar/paginated_search_bar.dart';
 import 'package:policesystem/api/police_api.dart';
-import 'package:policesystem/admin_component/floating_action_button_components.dart';
 import 'package:policesystem/admin_component/list_view_component.dart';
 import 'package:policesystem/model/police_model.dart';
 import 'package:policesystem/cashier/cashier_components/search_comp.dart';
+
+import '../Floating Action Button/police_floating_action_button_components.dart';
 
 class Policepanel extends StatefulWidget {
   const Policepanel({Key? key}) : super(key: key);
@@ -14,6 +15,8 @@ class Policepanel extends StatefulWidget {
 }
 
 class _PolicepanelState extends State<Policepanel> {
+  var rowsPerPage = PaginatedDataTable.defaultRowsPerPage;
+
   final isDialOpen = ValueNotifier(false);
   ItemPager pager = ItemPager();
   @override
@@ -82,7 +85,16 @@ class _PolicepanelState extends State<Policepanel> {
                     header: Text(
                       'Police Data Table',
                     ),
-                    rowsPerPage: 10,
+                    rowsPerPage: rowsPerPage,
+                    showFirstLastButtons: true,
+                    availableRowsPerPage: [1, 5, 10, 30, 50],
+                    onRowsPerPageChanged: (newRowsPerPage) {
+                      if (newRowsPerPage != null) {
+                        setState(() {
+                          rowsPerPage = newRowsPerPage;
+                        });
+                      }
+                    },
                     columns: [
                       DataColumn(label: Text('ID')),
                       DataColumn(label: Text('First Name')),
@@ -91,6 +103,7 @@ class _PolicepanelState extends State<Policepanel> {
                       DataColumn(label: Text('Contact Number')),
                       DataColumn(label: Text('Rank')),
                       DataColumn(label: Text('Position')),
+                      DataColumn(label: Text(' '))
                     ],
                     showCheckboxColumn: true,
                   ),
@@ -106,7 +119,7 @@ class _PolicepanelState extends State<Policepanel> {
           //====Navigation Bar====
           child: List_view(),
         ),
-        floatingActionButton: Speed_Dial(),
+        floatingActionButton: PoliceFloat(),
       ),
     );
   }
@@ -166,6 +179,12 @@ class MyData extends DataTableSource {
         ),
         DataCell(
           Text(dataList[index].position_id.toString()),
+        ),
+        DataCell(
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {},
+          ),
         ),
       ],
     );

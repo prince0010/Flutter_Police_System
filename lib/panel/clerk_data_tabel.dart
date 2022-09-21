@@ -241,7 +241,7 @@ class _PickPanel extends State<Pick_panel> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add User Profile'),
+        title: const Text('Clerk Panel'),
         leading: IconButton(
           icon: Icon(
             Icons.add,

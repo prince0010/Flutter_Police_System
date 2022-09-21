@@ -1,27 +1,31 @@
 import 'dart:convert';
 
 import 'package:desktop_window/desktop_window.dart';
-import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:policesystem/panel/signature_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:policesystem/adminPanels/zone_panel.dart';
 
-class UserFormPanel extends StatefulWidget {
+import 'cr_form_model.dart';
+
+class zonePanel extends StatefulWidget {
   @override
-  _UserFormPanelState createState() => _UserFormPanelState();
+  _zonePanelState createState() => _zonePanelState();
 }
 
-class _UserFormPanelState extends State<UserFormPanel> {
-  final _formKey = GlobalKey<FormState>();
+class _zonePanelState extends State<zonePanel> {
+  final TextEditingController _fncontroller = TextEditingController();
+  final TextEditingController _mncontroller = TextEditingController();
+  final TextEditingController _lncontroller = TextEditingController();
+  final TextEditingController _zonecontroller = TextEditingController();
   final maskFormatter = MaskTextInputFormatter(mask: "+63 (###) ###-####");
   final maskFormatter2 = MaskTextInputFormatter(mask: "##-##-####");
   final heightFormatter = MaskTextInputFormatter(mask: "#'##");
   List categoryItemList = [];
   List cateogoryBarangayList = [];
-// ===================================== Start API CALL for zone ==========================================================
+  Future<CR>? _futureAlbum;
+  final _formKey = GlobalKey<FormState>();
+
   Future getAllCategory() async {
     var baseURL = 'http://127.0.0.1:8000/api/zones';
 
@@ -54,6 +58,10 @@ class _UserFormPanelState extends State<UserFormPanel> {
     }
   }
 
+// =====================================End API CALL for zone ==========================================================
+
+// ===================================== Start API CALL for Barangay ==========================================================
+
 // =====================================End API CALL for barangay ==========================================================
 
   @override
@@ -65,7 +73,33 @@ class _UserFormPanelState extends State<UserFormPanel> {
   }
 
   // List of items in our dropdown menu
-  _UserFormPanelState() {
+  Future<CR> createAlbum(String firstname, String middlename, String lastname,
+      String zones) async {
+    final response = await http.post(
+      Uri.parse('http://127.0.0.1:8000/api/applicants'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'first_name': firstname,
+        'middle_name': middlename,
+        'last_name': lastname,
+        'zones': zones,
+      }),
+    );
+
+    if (response.statusCode == 201) {
+      // If the server did return a 201 CREATED response,
+      // then parse the JSON.
+      return CR.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
+      throw Exception('Failed to add Zone');
+    }
+  }
+
+  _zonePanelState() {
     // _barangayListSelected = _zoneListSelected;
     selectcs = civilStatus[0];
     selectsex = sex[0];
@@ -82,7 +116,6 @@ class _UserFormPanelState extends State<UserFormPanel> {
     'Widower',
     'Legally Separated'
   ];
-
   var dropdownvalue;
   var dropdownvalues;
 
@@ -90,12 +123,11 @@ class _UserFormPanelState extends State<UserFormPanel> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const BackButton(
-          color: Color.fromARGB(221, 0, 0, 0), // <-- SEE HERE
+        title: Text(
+          'Add Criminal Record',
         ),
-        title: Text('Add User'),
         foregroundColor: Color.fromARGB(221, 0, 0, 0),
-        backgroundColor: Color.fromARGB(221, 250, 250, 250),
+        backgroundColor: Color.fromARGB(221, 230, 230, 230),
       ),
       body: Container(
         padding: EdgeInsets.only(left: 40, right: 40),
@@ -111,54 +143,67 @@ class _UserFormPanelState extends State<UserFormPanel> {
                   alignment: Alignment
                       .centerLeft, // Align however you like (i.e .centerRight, centerLeft)
                   child: Text(
-                    'Full Name',
+                    'Add Criminal Record',
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
                   ),
                 ),
                 TextFormField(
+                  controller: _fncontroller,
                   decoration: const InputDecoration(
-                    labelText: "Enter First Name",
+                    labelText: "First Name",
                   ),
                   validator: (value) {
                     if (value!.isEmpty ||
                         !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
-                      return "Input Your Full Name";
+                      return "Input First Name";
                     } else {
                       return null;
                     }
                   },
                 ),
-                SizedBox(height: 16),
                 TextFormField(
+                  controller: _mncontroller,
                   decoration: const InputDecoration(
-                    labelText: "Enter Middle Name",
+                    labelText: "Middle Name",
                   ),
                   validator: (value) {
                     if (value!.isEmpty ||
                         !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
-                      return "Input Your Middle Name";
+                      return "Input Middle Name";
                     } else {
                       return null;
                     }
                   },
                 ),
-                SizedBox(height: 16),
                 TextFormField(
+                  controller: _lncontroller,
                   decoration: const InputDecoration(
-                    labelText: "Enter Your Last Name",
+                    labelText: "Last Name",
                   ),
                   validator: (value) {
                     if (value!.isEmpty ||
                         !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
-                      return "Input Your Full Name";
+                      return "Input Last Name";
                     } else {
                       return null;
                     }
                   },
                 ),
-                SizedBox(height: 16),
-
+                TextFormField(
+                  controller: _zonecontroller,
+                  decoration: InputDecoration(
+                    labelText: "Zone",
+                  ),
+                  inputFormatters: [maskFormatter2],
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Enter Zone";
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
                 Align(
                   alignment: Alignment
                       .centerLeft, // Align however you like (i.e .centerRight, centerLeft)
@@ -425,7 +470,6 @@ class _UserFormPanelState extends State<UserFormPanel> {
                     }
                   },
                 ),
-
                 SizedBox(height: 16),
                 ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -435,19 +479,40 @@ class _UserFormPanelState extends State<UserFormPanel> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
+                        _futureAlbum = createAlbum(
+                            _fncontroller.text,
+                            _mncontroller.text,
+                            _lncontroller.text,
+                            _zonecontroller.text);
+
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SignaturePanel()));
+                                builder: (context) => ZonePanel()));
                       }
+
                       // else {
-                      //   Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //           builder: (context) => SignaturePanel()));
+                      //
                       // }
                     },
-                    child: Text('Next')),
+                    child: Text('Add')),
+                // GestureDetector(
+                //   onTap: (() {
+                //     add();
+                //   }),
+                //   child: Container(
+                //     height: 80,
+                //     width: 80,
+                //     decoration: BoxDecoration(
+                //       shape: BoxShape.circle,
+                //       color: Color(0xFF363f93),
+                //     ),
+                //     child: Icon(
+                //       Icons.arrow_forward,
+                //       color: Colors.white,
+                //     ),
+                //   ),
+                // ),
                 SizedBox(height: 16),
               ],
             ),

@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:policesystem/panel/camera_panel.dart';
 import 'package:signature/signature.dart';
 
-class SignaturePanel extends StatefulWidget {
-  const SignaturePanel({Key? key}) : super(key: key);
+class AdSignaturePanel extends StatefulWidget {
+  const AdSignaturePanel({Key? key}) : super(key: key);
 
   @override
-  State<SignaturePanel> createState() => _SignaturePanelState();
+  State<AdSignaturePanel> createState() => _AdSignaturePanelState();
 }
 
-class _SignaturePanelState extends State<SignaturePanel> {
+class _AdSignaturePanelState extends State<AdSignaturePanel> {
   final SignatureController _controller = SignatureController(
     penStrokeWidth: 4.0,
     exportBackgroundColor: Colors.white,
@@ -23,9 +23,7 @@ class _SignaturePanelState extends State<SignaturePanel> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Signature Panel'),
-        foregroundColor: Color.fromARGB(221, 0, 0, 0),
-        backgroundColor: Color.fromARGB(221, 250, 250, 250),
+        title: Text('Signature Panel'), 
       ),
       body: ListView(
         children: [

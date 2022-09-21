@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:paginated_search_bar/paginated_search_bar.dart';
-import 'package:policesystem/api/police_api.dart';
-import 'package:policesystem/admin_component/floating_action_button_components.dart';
 import 'package:policesystem/admin_component/list_view_component.dart';
 import 'package:policesystem/api/pur_panel_api.dart';
-import 'package:policesystem/api/zone_api.dart';
 import 'package:policesystem/cashier/cashier_components/search_comp.dart';
 import 'package:policesystem/model/pur_model.dart';
-import 'package:policesystem/model/zone_model.dart';
+
+import '../Floating Action Button/purpose_floating_action_button_components.dart';
 
 class PurPanel extends StatefulWidget {
   const PurPanel({Key? key}) : super(key: key);
@@ -17,6 +15,7 @@ class PurPanel extends StatefulWidget {
 }
 
 class _PurPanelState extends State<PurPanel> {
+  var rowsPerPage = PaginatedDataTable.defaultRowsPerPage;
   final isDialOpen = ValueNotifier(false);
   ItemPager pager = ItemPager();
   @override
@@ -39,10 +38,12 @@ class _PurPanelState extends State<PurPanel> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Zone Tables'),
+          title: Text('PUR Tables'),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                logout();
+              },
               icon: const Icon(Icons.login_rounded),
             ),
           ],
@@ -85,10 +86,20 @@ class _PurPanelState extends State<PurPanel> {
                     header: Text(
                       'Display Table',
                     ),
-                    rowsPerPage: 10,
+                    rowsPerPage: rowsPerPage,
+                    showFirstLastButtons: true,
+                    availableRowsPerPage: [1, 5, 10, 20, 50],
+                    onRowsPerPageChanged: (newRowsPerPage) {
+                      if (newRowsPerPage != null) {
+                        setState(() {
+                          rowsPerPage = newRowsPerPage;
+                        });
+                      }
+                    },
                     columns: [
                       DataColumn(label: Text('ID')),
-                      DataColumn(label: Text('Name'))
+                      DataColumn(label: Text('Name')),
+                      DataColumn(label: Text(' '))
                     ],
                     showCheckboxColumn: true,
                   ),
@@ -104,12 +115,16 @@ class _PurPanelState extends State<PurPanel> {
           //====Navigation Bar====
           child: List_view(),
         ),
-        floatingActionButton: Speed_Dial(),
+        floatingActionButton: Speed_Dial4(),
       ),
     );
   }
 
   DataTableSource dataSource(List<Pur> purList) => MyData(dataList: purList);
+}
+
+void logout() {
+  //Create function of logout sa local storage na ma remove ang token og ang user
 }
 
 class MyData extends DataTableSource {
@@ -148,6 +163,12 @@ class MyData extends DataTableSource {
         ),
         DataCell(
           Text(dataList[index].name),
+        ),
+        DataCell(
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {},
+          ),
         ),
       ],
     );
